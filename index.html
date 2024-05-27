@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MineSweeper</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+  <body>
+    <div class="modal">
+      <div class="modal__box">
+        <button class="modal-close-btn">Закрыть окно</button>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="timer">
+        <p>Время</p>
+        <div class="interval">
+          <span class="minutes">00</span>
+          <span>:</span>
+          <span class="seconds">00</span>
+          <span>:</span>
+          <span class="hundredths-sec">00</span>
+        </div>
+      </div>
+      <div>
+        <button class="restart-btn">
+        
+        </button>
+      </div>
+      <div class="mines-count-box">
+        <p>Количество мин</p>
+        <span class="mines-count">
+          0
+        </span>
+      </div>
+    </div>
+    <div class="settings">
+      <label for="count mines">
+        Выберите количество мин
+        <select name="count mines" id="count mines">
+          <option>1</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+        </select>
+      </label>
+      <label for="size">
+        Выберите размер поля
+        <select id="size" name="size" >
+          <option value="3">3 x 3</option>
+          <option value="4">4 x 4</option>
+          <option value="9">9 x 9</option>
+          <option value="12">12 x 12</option>
+          <option value="24">24 x 24</option>
+        </select>
+      </label>
+      <button class="settings-btn">Применить настройки</button>
+      <button class="start-btn">Начать игру</button>
+    </div>
+
+    <div class="game">
+    
+      <div class="board">
+      </div>
+    </div>
+
+    <script src="./index.js" />
+  </body>
+</html>
