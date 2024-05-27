@@ -11,13 +11,15 @@ class MineSweeper{
 
     const board = document.getElementsByClassName('board')[0]
     // устанавливаем логику с кликами по клеткам
-    board.addEventListener('click', (e) => {
+    const cellsLogic = (e) => {
       if (e.target.classList.contains('cell')) {
         this.clickOnCell(e, true);
       }
-    });
+    }
+    board.removeEventListener('click', cellsLogic)
+    board.addEventListener('click', cellsLogic);
     // устанавливаем логику с флагами
-    board.addEventListener('contextmenu', (e) => {
+    const flagsLogic = (e) => {
       e.preventDefault();
       e.stopPropagation();
       const cell = e.target;
@@ -43,14 +45,16 @@ class MineSweeper{
           }
         }
       }
-    });
+    }
+    board.removeEventListener('contextmenu', flagsLogic)
+    board.addEventListener('contextmenu', flagsLogic);
   }
 
   startGame(){
     this.initializeField()
   }
    // инициализация поля
-  initializeField = () => {
+  initializeField(){
     const boardElement = document.getElementsByClassName('board')[0]
     for(let i = 0; i < this.size; i++){
       const row = []
@@ -157,8 +161,7 @@ class MineSweeper{
     secondsBlock.innerHTML = '00'
     minutesBlock.innerHTML = '00'
     
-    const closeBtn = document.getElementsByClassName('modal-close-btn')[0]
-    closeBtn.addEventListener('click', (e) => {
+    const closeModalLogic = (e) => {
       e.preventDefault()
       let startBtn = document.getElementsByClassName('start-btn')[0]
       startBtn.disabled = false
@@ -173,7 +176,9 @@ class MineSweeper{
       newBoard.classList.add('board')
       document.body.append(newBoard)
       onClick({preventDefault(){}})
-    })
+      modal.removeEventListener('click', closeModalLogic)
+    }
+    modal.addEventListener('click', closeModalLogic)
   }
 }
 
@@ -261,8 +266,7 @@ let onClick =  (e) => {
       alert.innerHTML = 'Количество мин не может быть больше размера самого поля'
       document.body.append(alert)
     }else{     
-      console.log(countMines, size)
-      game = new MineSweeper(size, countMines)
+      game = new MineSweeper(size, countMines, interval)
     }
 }
 settings.addEventListener('click', onClick)
