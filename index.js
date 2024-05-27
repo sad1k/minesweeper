@@ -11,15 +11,15 @@ class MineSweeper{
 
     const board = document.getElementsByClassName('board')[0]
     // устанавливаем логику с кликами по клеткам
-    const cellsLogic = (e) => {
+    this.cellsLogic = (e) => {
       if (e.target.classList.contains('cell')) {
         this.clickOnCell(e, true);
       }
     }
-    board.removeEventListener('click', cellsLogic)
-    board.addEventListener('click', cellsLogic);
+    board.removeEventListener('click', this.cellsLogic)
+    board.addEventListener('click',this.cellsLogic);
     // устанавливаем логику с флагами
-    const flagsLogic = (e) => {
+    this.flagsLogic = (e) => {
       e.preventDefault();
       e.stopPropagation();
       const cell = e.target;
@@ -46,8 +46,8 @@ class MineSweeper{
         }
       }
     }
-    board.removeEventListener('contextmenu', flagsLogic)
-    board.addEventListener('contextmenu', flagsLogic);
+    board.removeEventListener('contextmenu', this.flagsLogic)
+    board.addEventListener('contextmenu', this.flagsLogic);
   }
 
   startGame(){
@@ -143,14 +143,24 @@ class MineSweeper{
     clearInterval(interval)
     if(!win){
       box.classList.add('lose')
-      let title = document.createElement('h1')
-      title.innerHTML = 'К сожалению вы проиграли!'
-      box.prepend(title)
-    }else{
+      let existingTitle = box.getElementsByTagName('h1')[0];
+      if(existingTitle){
+        existingTitle.innerHTML = 'К сожалению вы проиграли!'
+      }else{
+        let title = document.createElement('h1')
+        title.innerHTML = 'К сожалению вы проиграли!'
+        box.prepend(title)
+      }
+    }else {
       box.classList.add('win')
-      let title = document.createElement('h1')
-      title.innerHTML = `Поздравляю вы выйграли! За время: ${minutesBlock.innerHTML}:${secondsBlock.innerHTML}:${hundredthsBlock.innerHTML}`
-      box.prepend(title)
+      let existingTitle = box.getElementsByTagName('h1')[0];
+      if (existingTitle) {
+        existingTitle.innerHTML = `Поздравляю вы выиграли! За время: ${minutesBlock.innerHTML}:${secondsBlock.innerHTML}:${hundredthsBlock.innerHTML}`;
+      } else {
+        let newTitle = document.createElement('h1');
+        newTitle.innerHTML = `Поздравляю вы выиграли! За время: ${minutesBlock.innerHTML}:${secondsBlock.innerHTML}:${hundredthsBlock.innerHTML}`;
+        box.prepend(newTitle);
+      }
     }
     modal.classList.add('open')
 
@@ -171,6 +181,8 @@ class MineSweeper{
       let title = box.getElementsByTagName('h1')[0]
       title.remove()
       let board = document.getElementsByClassName('board')[0]
+      board.removeEventListener('contextmenu', this.flagsLogic)
+      board.removeEventListener('click', this.cellsLogic)
       board.remove()
       let newBoard = document.createElement('div')
       newBoard.classList.add('board')
@@ -265,7 +277,10 @@ let onClick =  (e) => {
       alert.classList.add('alert')
       alert.innerHTML = 'Количество мин не может быть больше размера самого поля'
       document.body.append(alert)
-    }else{     
+    }else{
+      if(game && countMines === game.countMines && size === game.size ){
+        return
+      }    
       game = new MineSweeper(size, countMines, interval)
     }
 }
